@@ -1,0 +1,38 @@
+// Fonts
+@import url('https://fonts.bunny.net/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import 'bootstrap/scss/bootstrap';
+
+.category-tile {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 150px;
+    padding: 14px;
+    background: #f2f2f7;
+    border-radius: 12px;
+    color: #111;
+    text-decoration: none;
+    transition: transform .15s ease, box-shadow .15s ease;
+
+    &:hover {
+        color: #111;
+        transform: translateY(-2px);
+        box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .12);
+    }
+
+    .title {
+        font-weight: 700;
+        line-height: 1.25;
+    }
+
+    .icon {
+        font-size: 2.6rem;
+        text-align: center;
+        color: #0d6efd;
+    }
+}

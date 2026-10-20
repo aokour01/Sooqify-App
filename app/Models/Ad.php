@@ -1,0 +1,90 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+
+class Ad extends Model
+{
+    use SoftDeletes;
+
+    public const STATUS_PENDING  = 'pending';
+    public const STATUS_ACTIVE   = 'active';
+    public const STATUS_SOLD     = 'sold';
+    public const STATUS_REJECTED = 'rejected';
+    public const STATUS_EXPIRED  = 'expired';
+
+    protected $fillable = [
+        'user_id', 'category_id', 'city_id', 'title', 'slug', 'description',
+        'price', 'is_negotiable', 'condition', 'contact_phone',
+    ];
+
+    protected $casts = [
+        'is_negotiable' => 'boolean',
+        'published_at'  => 'datetime',
+        'expires_at'    => 'datetime',
+    ];
+
+    public function user()
+    {
+
+        return $this->belongsTo(User::class);
+
+    }
+    public function category()
+    {
+
+        return $this->belongsTo(Category::class);
+
+    }
+    public function city()
+    {
+
+        return $this->belongsTo(City::class);
+
+    }
+    public function images()
+    {
+
+        return $this->hasMany(AdImage::class)->orderBy('sort_order');
+
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', self::STATUS_ACTIVE)
+            ->where(fn ($q) => $q->whereNull('expires_at')->orWhere('expires_at', '>', now()));
+    }
+
+    public function isLive(): bool
+    {
+        return $this->status === self::STATUS_ACTIVE
+            && (! $this->expires_at || $this->expires_at->isFuture());
+    }
+
+    public function canBeRenewed(): bool
+    {
+        if ($this->status === self::STATUS_EXPIRED) {
+            return true;
+        }
+
+        // Active ads can be extended during their last 7 days
+        return $this->status === self::STATUS_ACTIVE
+            && $this->expires_at
+            && $this->expires_at->lte(now()->addDays(7));
+    }
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
+    public function reports()
+    {
+
+        return $this->hasMany(Report::class);
+
+    }
+}
