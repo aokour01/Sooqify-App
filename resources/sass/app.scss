@@ -36,3 +36,23 @@
         color: #0d6efd;
     }
 }
+.filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .4rem .8rem;
+    background: #cfe8fc;
+    border-radius: 12px;
+    color: #12304a;
+    font-size: .95rem;
+
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .remove {
+        font-size: 1.05rem;
+        line-height: 1;
+    }
+}

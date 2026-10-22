@@ -13,11 +13,21 @@ class ExpireAds extends Command
 
     public function handle(): int
     {
-        $count = Ad::where('status', Ad::STATUS_ACTIVE)
+        $ads = Ad::where('status', Ad::STATUS_ACTIVE)
             ->where('expires_at', '<', now())
-            ->update(['status' => Ad::STATUS_EXPIRED]);
+            ->with('user')
+            ->get();
 
-        $this->info("Expired {$count} ad(s).");
+        foreach ($ads as $ad) {
+            $ad->forceFill(['status' => Ad::STATUS_EXPIRED])->save();
+
+            $ad->user->notify(new AdEvent(
+                $ad, 'expired',
+                "Your ad \"{$ad->title}\" has expired. You can renew it from My ads."
+            ));
+        }
+
+        $this->info("Expired {$ads->count()} ad(s).");
 
         return self::SUCCESS;
     }

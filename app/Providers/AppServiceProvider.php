@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\View;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -21,7 +22,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-
+        View::composer('layouts.app', function ($view) {
+            $view->with(
+                'unreadNotifications',
+                auth()->check() ? auth()->user()->unreadNotifications()->count() : 0
+            );
+        });
         Paginator::useBootstrapFive();
     }
 }

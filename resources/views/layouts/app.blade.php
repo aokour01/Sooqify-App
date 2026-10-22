@@ -18,7 +18,7 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-lg">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
@@ -33,12 +33,12 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto align-items-md-center">
-                        <li class="nav-item me-md-2 my-1 my-md-0">
+                        <li class="nav-item me-lg-2 my-1">
                             <a href="{{ route('ads.create') }}" class="btn btn-warning">Post an ad</a>
                         </li>
 
                         @canany(['ads.approve', 'ads.reject'])
-                            <li class="nav-item me-md-2 my-1 my-md-0">
+                            <li class="nav-item me-lg-2 my-1">
                                 <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-secondary">Admin</a>
                             </li>
                         @endcanany
@@ -60,13 +60,26 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
                             </li>
-                        
+
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('my-ads.index') }}">My ads</a>
+                                <a class="nav-link" href="{{ route('my-ads.index') }}">
+                                    <i class="bi bi-badge-ad"></i>
+                                </a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('favorites.index') }}">Favorites</a>
+                                <a class="nav-link" href="{{ route('favorites.index') }}">
+                                    <i class="bi bi-heart"></i>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('notifications.index') }}" title="Notifications">
+                                    <i class="bi bi-bell"></i>
+                                    @if ($unreadNotifications > 0)
+                                        <span class="badge rounded-pill bg-danger">{{ $unreadNotifications }}</span>
+                                    @endif
+                                </a>
                             </li>
 
                             <li class="nav-item dropdown">
@@ -89,7 +102,8 @@
                             </li>
                         @endguest
                     </ul>
-                </div>            </div>
+                </div>
+            </div>
         </nav>
 
         <main class="py-4">

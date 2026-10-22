@@ -30,7 +30,7 @@
 
         {{-- Categories --}}
         <h4 class="mb-3">Browse by category</h4>
-        <div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-3 mb-5">
+        <div class="row row-cols-lg-6 g-3 mb-5">
             @foreach ($categories as $category)
                 <div class="col">
                     <a href="{{ route('ads.index', ['category' => $category->slug]) }}" class="category-tile">
@@ -62,16 +62,18 @@
                         <div class="card h-100 shadow-sm">
                             @if ($ad->images->isNotEmpty())
                                 <img src="{{ asset('storage/' . $ad->images->first()->path) }}"
-                                     class="card-img-top" style="height: 160px; object-fit: cover;"
+                                     class="card-img-top p-2" style="height: 160px; object-fit: cover;"
                                      loading="lazy" alt="{{ $ad->title }}">
                             @else
                                 <div class="bg-light d-flex align-items-center justify-content-center text-muted"
                                      style="height: 160px;">No image</div>
                             @endif
                             <div class="card-body">
-                                <h6 class="card-title">{{ \Illuminate\Support\Str::limit($ad->title, 45) }}</h6>
-                                <p class="mb-1 fw-bold">{{ $ad->price ? number_format($ad->price) . ' JOD' : 'Contact for price' }}</p>
+                                <h4 class="mb-2 fw-bold text-danger">{{ $ad->price ? number_format($ad->price) . ' JOD' : 'Contact for price' }}</h4>
+                                <h5 class="card-title">{{ $ad->title }}</h5>
                                 <small class="text-muted">{{ $ad->city->name }}</small>
+                                <small class="ms-2">{{$ad->publishSince()}}</small>
+
                             </div>
                         </div>
                     </a>

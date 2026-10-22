@@ -9,6 +9,9 @@ use App\Models\City;
 use App\Models\Ad;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use App\Models\User;
+use App\Notifications\AdEvent;
+use Illuminate\Support\Facades\Notification;
 
 
 class MyAdController extends Controller
@@ -47,6 +50,7 @@ class MyAdController extends Controller
         $this->authorize('update', $ad);
         abort_unless(in_array($ad->status, self::EDITABLE), 403);
 
+        $previousStatus = $ad->status;
         $data = $request->safe()->except(['images', 'remove_images']);
         $data['is_negotiable'] = $request->boolean('is_negotiable');
 
@@ -86,6 +90,14 @@ class MyAdController extends Controller
 
         // Delete files only after the database changes succeeded
         Storage::disk('public')->delete($filesToDelete);
+
+        // Staff only need to hear about it if the ad just went back into the review queue
+        if ($needsReview && $previousStatus !== Ad::STATUS_PENDING) {
+            Notification::send(
+                User::permission('ads.approve')->where('id', '!=', $request->user()->id)->get(),
+                new AdEvent($ad, 'pending', "Updated ad waiting for approval again: \"{$ad->title}\" by {$request->user()->name}.")
+            );
+        }
 
         $message = $needsReview
             ? 'Ad updated and sent for review again.'

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Ad;
 use Illuminate\Http\Request;
+use App\Notifications\AdEvent;
 
 class AdminAdController extends Controller
 {
@@ -29,6 +30,10 @@ class AdminAdController extends Controller
             'rejection_reason' => null,
         ])->save();
 
+        $ad->user->notify(new AdEvent(
+            $ad, 'approved', "Your ad \"{$ad->title}\" was approved and is now live."
+        ));
+
         return back()->with('status', "Ad \"{$ad->title}\" approved.");
     }
 
@@ -45,6 +50,47 @@ class AdminAdController extends Controller
             'rejection_reason' => $data['rejection_reason'],
         ])->save();
 
+        $ad->user->notify(new AdEvent(
+            $ad, 'rejected', "Your ad \"{$ad->title}\" was rejected: {$data['rejection_reason']}"
+        ));
+
         return back()->with('status', "Ad \"{$ad->title}\" rejected.");
+    }
+    public function all(Request $request)
+    {
+        $statuses = ['pending', 'active', 'sold', 'rejected', 'expired'];
+
+        $ads = Ad::query()
+            ->when($request->status === 'deleted', fn ($q) => $q->onlyTrashed())
+            ->when(in_array($request->status, $statuses, true), fn ($q) => $q->where('status', $request->status))
+            ->when($request->filled('q'), function ($q) use ($request) {
+                $term = '%' . $request->q . '%';
+
+                $q->where(fn ($w) => $w->where('title', 'like', $term)
+                    ->orWhereHas('user', fn ($u) => $u->where('name', 'like', $term)
+                        ->orWhere('email', 'like', $term)));
+            })
+            ->with(['user', 'category', 'city'])
+            ->latest()
+            ->paginate(20)
+            ->withQueryString();
+
+        return view('admin.ads.all', compact('ads'));
+    }
+
+    public function destroy(Ad $ad)
+    {
+        $ad->delete();   // soft delete: the row stays and can be restored
+
+        return back()->with('status', "Ad \"{$ad->title}\" removed.");
+    }
+
+    public function restore(int $adId)
+    {
+        // {ad} binding skips deleted rows, so the id is looked up by hand
+        $ad = Ad::onlyTrashed()->findOrFail($adId);
+        $ad->restore();
+
+        return back()->with('status', "Ad \"{$ad->title}\" restored.");
     }
 }

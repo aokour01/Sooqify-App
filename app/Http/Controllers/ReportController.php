@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Ad;
 use App\Models\Report;
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Notifications\AdEvent;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Notification;
 
 class ReportController extends Controller
 {
@@ -19,13 +22,23 @@ class ReportController extends Controller
             'details' => ['nullable', 'string', 'max:500'],
         ]);
 
-        $report = Report::firstOrCreate(
+        $report = Report::unguarded(fn () => Report::firstOrCreate(
             ['ad_id' => $ad->id, 'user_id' => $request->user()->id],
             $data
-        );
+        ));
+
+        // Tell the staff only about a genuinely new report
+        if ($report->wasRecentlyCreated) {
+            Notification::send(
+                User::permission('reports.view')->get(),
+                new AdEvent($ad, 'report', "New report on \"{$ad->title}\": " . Report::REASONS[$data['reason']])
+            );
+        }
+
         $message = $report->wasRecentlyCreated
             ? 'Thanks, your report was sent to the moderators.'
             : 'You have already reported this ad. The moderators will review it.';
 
-        return back()->with('status', $message);    }
+        return back()->with('status', $message);
+    }
 }

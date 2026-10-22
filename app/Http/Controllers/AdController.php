@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use App\Models\Ad;
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Notifications\AdEvent;
+use Illuminate\Support\Facades\Notification;
 
 class AdController extends Controller
 {
@@ -54,6 +57,7 @@ class AdController extends Controller
             'breadcrumb'    => $breadcrumb,
             'subcategories' => $subcategories,
             'cities'        => City::orderBy('name')->get(),
+            'sidebar'       =>$this->categorySidebar($category),
         ]);
 
     }
@@ -89,10 +93,14 @@ class AdController extends Controller
             return $ad;
         });
 
+        Notification::send(
+            User::permission('ads.approve')->where('id', '!=', $request->user()->id)->get(),
+            new AdEvent($ad, 'pending', "New ad waiting for approval: \"{$ad->title}\" by {$request->user()->name}.")
+        );
+
         return redirect()->route('home')
             ->with('status', 'Your ad was submitted and is waiting for approval.');
-    }
-    public function show(Request $request, Ad $ad)
+    }    public function show(Request $request, Ad $ad)
     {
         $user = $request->user();
 
@@ -135,5 +143,58 @@ class AdController extends Controller
         abort_unless($ad->isLive(), 404);
 
         return response()->json(['phone' => $ad->contact_phone]);
+    }
+    /**
+     * Data for the left-hand category tree: the chain of parents to show,
+     * the categories to list under it, and the number of active ads
+     * for every category (including its subcategories).
+     */
+    private function categorySidebar(?Category $category): array
+    {
+        // Two queries in total, however deep the tree is
+        $all      = Category::where('is_active', true)->orderBy('sort_order')->get();
+        $byParent = $all->groupBy(fn ($c) => $c->parent_id ?? 0);
+        $byId     = $all->keyBy('id');
+
+        $direct = Ad::active()
+            ->select('category_id', DB::raw('count(*) as total'))
+            ->groupBy('category_id')
+            ->pluck('total', 'category_id');
+
+        // Count of a category = its own ads + the counts of all its children
+        $counts = [];
+        $total = function (int $id) use (&$total, &$counts, $byParent, $direct) {
+            $sum = (int) ($direct[$id] ?? 0);
+
+            foreach ($byParent[$id] ?? [] as $child) {
+                $sum += $total($child->id);
+            }
+
+            return $counts[$id] = $sum;
+        };
+
+        foreach ($byParent[0] ?? [] as $root) {
+            $total($root->id);
+        }
+
+        // List the children of the current category. A category with no children
+        // lists its siblings instead, with itself highlighted.
+        $listParent = null;
+        if ($category) {
+            $listParentId = isset($byParent[$category->id]) ? $category->id : $category->parent_id;
+            $listParent   = $listParentId ? ($byId[$listParentId] ?? null) : null;
+        }
+
+        // The chain of parents shown above the list, root first
+        $chain = [];
+        for ($node = $listParent; $node; $node = $node->parent_id ? ($byId[$node->parent_id] ?? null) : null) {
+            array_unshift($chain, $node);
+        }
+
+        return [
+            'chain'  => $chain,
+            'items'  => $byParent[$listParent?->id ?? 0] ?? collect(),
+            'counts' => $counts,
+        ];
     }
 }

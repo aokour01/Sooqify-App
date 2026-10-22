@@ -8,11 +8,7 @@ use App\Models\City;
 
 class HomeController extends Controller
 {
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
+
     public function index()
     {
         $categories = Category::whereNull('parent_id')

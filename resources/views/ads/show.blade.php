@@ -93,35 +93,6 @@
                                         data-url="{{ route('ads.phone', $ad) }}">
                                     Show phone number
                                 </button>
-                                @auth
-                                    @if (auth()->id() !== $ad->user_id && $ad->status === 'active')
-                                        <div class="mt-3">
-                                            <a class="small text-muted" data-bs-toggle="collapse" href="#reportForm" role="button">
-                                                Report this ad
-                                            </a>
-
-                                            <div class="collapse mt-2 @if ($errors->has('reason') || $errors->has('details')) show @endif" id="reportForm">
-                                                <form method="POST" action="{{ route('reports.store', $ad) }}">
-                                                    @csrf
-                                                    <select name="reason" class="form-select form-select-sm mb-2 @error('reason') is-invalid @enderror" required>
-                                                        <option value="">Choose a reason</option>
-                                                        @foreach (\App\Models\Report::REASONS as $key => $label)
-                                                            <option value="{{ $key }}" @selected(old('reason') === $key)>{{ $label }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    @error('reason') <div class="invalid-feedback d-block mb-2">{{ $message }}</div> @enderror
-
-                                                    <textarea name="details" rows="2" maxlength="500"
-                                                              class="form-control form-control-sm mb-2 @error('details') is-invalid @enderror"
-                                                              placeholder="Details (optional)">{{ old('details') }}</textarea>
-                                                    @error('details') <div class="invalid-feedback d-block mb-2">{{ $message }}</div> @enderror
-
-                                                    <button class="btn btn-sm btn-outline-danger">Send report</button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    @endif
-                                @endauth
                                 <a id="phone-link" href="#" class="btn btn-success w-100 d-none"></a>
                             @else
                                 <a href="{{ route('login') }}" class="btn btn-outline-success w-100">
@@ -131,6 +102,36 @@
                         @else
                             <p class="text-muted mb-0">The seller did not provide a phone number.</p>
                         @endif
+                        @auth
+                            @if (auth()->id() !== $ad->user_id && $ad->status === 'active')
+                                <div class="mt-3">
+                                    <a class="small text-muted" data-bs-toggle="collapse" href="#reportForm" role="button">
+                                        Report this ad
+                                    </a>
+
+                                    <div class="collapse mt-2 @if ($errors->has('reason') || $errors->has('details')) show @endif" id="reportForm">
+                                        <form method="POST" action="{{ route('reports.store', $ad) }}">
+                                            @csrf
+                                            <select name="reason" class="form-select form-select-sm mb-2 @error('reason') is-invalid @enderror" required>
+                                                <option value="">Choose a reason</option>
+                                                @foreach (\App\Models\Report::REASONS as $key => $label)
+                                                    <option value="{{ $key }}" @selected(old('reason') === $key)>{{ $label }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('reason') <div class="invalid-feedback d-block mb-2">{{ $message }}</div> @enderror
+
+                                            <textarea name="details" rows="2" maxlength="500"
+                                                      class="form-control form-control-sm mb-2 @error('details') is-invalid @enderror"
+                                                      placeholder="Details (optional)">{{ old('details') }}</textarea>
+                                            @error('details') <div class="invalid-feedback d-block mb-2">{{ $message }}</div> @enderror
+
+                                            <button class="btn btn-sm btn-outline-danger">Send report</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            @endif
+                        @endauth
+
                     </div>
                 </div>
             </div>

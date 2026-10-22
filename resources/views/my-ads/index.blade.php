@@ -46,7 +46,7 @@
                             @endif
                         </div>
 
-                        <div class="col-lg-4 text-md-end mt-2 mt-md-0">
+                        <div class="col-lg-4 text-md-end mt-2">
                             @if (in_array($ad->status, ['pending', 'active', 'rejected']))
                                 <a href="{{ route('my-ads.edit', $ad) }}" class="btn btn-sm btn-outline-primary">Edit</a>
                             @endif

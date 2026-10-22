@@ -17,12 +17,13 @@ class Ad extends Model
     public const STATUS_EXPIRED  = 'expired';
 
     protected $fillable = [
-        'user_id', 'category_id', 'city_id', 'title', 'slug', 'description',
+        'category_id', 'city_id', 'title', 'slug', 'description',
         'price', 'is_negotiable', 'condition', 'contact_phone',
     ];
 
     protected $casts = [
         'is_negotiable' => 'boolean',
+        'price' => 'integer',
         'published_at'  => 'datetime',
         'expires_at'    => 'datetime',
     ];
@@ -70,7 +71,7 @@ class Ad extends Model
             return true;
         }
 
-        // Active ads can be extended during their last 7 days
+
         return $this->status === self::STATUS_ACTIVE
             && $this->expires_at
             && $this->expires_at->lte(now()->addDays(7));
@@ -86,5 +87,10 @@ class Ad extends Model
 
         return $this->hasMany(Report::class);
 
+    }
+
+    public function publishSince(): string
+    {
+        return ($this->published_at ?? $this->created_at)->diffForHumans();
     }
 }

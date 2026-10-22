@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -20,13 +19,12 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'password',
     ];
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
         ];
-    }
     public function ads()
     {
         return $this->hasMany(Ad::class);

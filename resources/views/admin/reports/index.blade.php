@@ -26,7 +26,6 @@
                                     <a href="{{ route('ads.show', $report->ad) }}" target="_blank" class="text-decoration-none">
                                         {{ $report->ad->title }}
                                     </a>
-                                    <span class="badge bg-secondary">{{ ucfirst($report->ad->status) }}</span>
                                 @else
                                     <span class="text-muted">Ad no longer exists</span>
                                 @endif
@@ -42,11 +41,10 @@
 
                             <small class="text-muted">
                                 Reported by {{ $report->reporter->name }} · {{ $report->created_at->diffForHumans() }}
-                                @if ($report->ad) · Ad owner: {{ $report->ad->user->name }} @endif
                             </small>
                         </div>
 
-                        <div class="col-lg-3 mt-2 mt-md-0">
+                        <div class="col-lg-3 mt-2">
                             <form method="POST" action="{{ route('admin.reports.dismiss', $report) }}" class="mb-2">
                                 @csrf @method('PATCH')
                                 <button class="btn btn-outline-secondary w-100 btn-sm">Dismiss report</button>

@@ -7,6 +7,7 @@ use App\Models\Ad;
 use App\Models\Report;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Notifications\AdEvent;
 
 class AdminReportController extends Controller
 {
@@ -45,6 +46,11 @@ class AdminReportController extends Controller
                     'status'           => Ad::STATUS_REJECTED,
                     'rejection_reason' => 'Removed after a report: ' . Report::REASONS[$report->reason],
                 ])->save();
+
+                $ad->user->notify(new AdEvent(
+                    $ad, 'rejected',
+                    "Your ad \"{$ad->title}\" was removed after a report: " . Report::REASONS[$report->reason]
+                ));
             }
 
             // Close every open report on this ad, not just this one

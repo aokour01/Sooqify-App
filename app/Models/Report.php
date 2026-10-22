@@ -20,8 +20,7 @@ class Report extends Model
     public const STATUS_DISMISSED = 'dismissed';
 
     protected $fillable = [
-        'ad_id',
-        'user_id',
+
         'reason',
         'details'
     ];
