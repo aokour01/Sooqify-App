@@ -32,7 +32,7 @@ class StoreAdRequest extends FormRequest
             'city_id'       => ['required', 'exists:cities,id'],
             'price'         => ['nullable', 'integer', 'min:0', 'max:9999999'],
             'is_negotiable' => ['nullable', 'boolean'],
-            'condition'     => ['nullable', 'in:new,used'],
+            'condition'     => ['required', 'in:new,used'],
             'contact_phone' => ['nullable', 'string', 'max:14'],
             'images'        => ['nullable', 'array', 'max:8'],
             'images.*'      => ['image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],

@@ -69,7 +69,6 @@ class MyAdController extends Controller
                 $needsReview = true;
             }
 
-            // Add new images after the existing ones
             $next = ($ad->images()->max('sort_order') ?? -1) + 1;
             foreach ($request->file('images', []) as $file) {
                 $ad->images()->create([
@@ -79,7 +78,6 @@ class MyAdController extends Controller
                 $needsReview = true;
             }
 
-            // Changes to an approved or rejected ad go back to moderation
             if ($needsReview && $ad->status !== Ad::STATUS_PENDING) {
                 $ad->status = Ad::STATUS_PENDING;
                 $ad->rejection_reason = null;
@@ -88,10 +86,8 @@ class MyAdController extends Controller
             $ad->save();
         });
 
-        // Delete files only after the database changes succeeded
         Storage::disk('public')->delete($filesToDelete);
 
-        // Staff only need to hear about it if the ad just went back into the review queue
         if ($needsReview && $previousStatus !== Ad::STATUS_PENDING) {
             Notification::send(
                 User::permission('ads.approve')->where('id', '!=', $request->user()->id)->get(),

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('slug')->unique();
             $table->text('description');
-            $table->decimal('price', 8)->nullable();
+            $table->integer('price')->nullable();
             $table->boolean('is_negotiable')->default(false);
             $table->string('condition')->nullable();
             $table->string('contact_phone', 14)->nullable();

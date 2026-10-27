@@ -37,6 +37,7 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
+
         $recent = $user->ads()->with('images')->latest()->take(5)->get();
 
         return view('dashboard', compact('stats', 'rejected', 'needsRenewal', 'recent'));
