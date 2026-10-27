@@ -20,7 +20,6 @@
 
             @include('ads._fields')
 
-            {{-- Current images --}}
             @if ($ad->images->isNotEmpty())
                 <label class="form-label">Current images (tick to remove)</label>
                 <div class="row mb-3">
@@ -39,7 +38,6 @@
                 </div>
             @endif
 
-            {{-- New images --}}
             <div class="mb-4">
                 <label for="images" class="form-label">Add images (up to 8 in total, max 2 MB each)</label>
                 <input type="file" id="images" name="images[]" multiple accept="image/jpeg,image/png,image/webp"

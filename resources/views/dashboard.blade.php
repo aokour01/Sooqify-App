@@ -12,7 +12,6 @@
                 <h2 class="mb-0">Hello, {{ auth()->user()->name }}</h2>
                 <small class="text-muted">Member since {{ auth()->user()->created_at->format('M Y') }}</small>
             </div>
-            <a href="{{ route('ads.create') }}" class="btn btn-warning">Post an ad</a>
         </div>
 
         @php
@@ -46,7 +45,7 @@
         </div>
 
         <div class="row g-4">
-            {{-- Needs attention --}}
+
             <div class="col-lg-5">
                 <div class="card shadow-lg mb-4">
                     <div class="card-header bg-white fw-bold">Needs your attention</div>
@@ -87,14 +86,13 @@
                     </ul>
                 </div>
 
-                {{-- Shortcuts --}}
                 <div class="d-grid gap-2">
                     <a href="{{ route('my-ads.index') }}" class="btn btn-outline-secondary">Manage my ads</a>
                     <a href="{{ route('favorites.index') }}" class="btn btn-outline-secondary">My favorites</a>
                 </div>
             </div>
 
-            {{-- Recent ads --}}
+
             <div class="col-lg-7">
                 <div class="card shadow-sm">
                     <div class="card-header bg-white d-flex justify-content-between">

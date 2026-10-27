@@ -5,7 +5,7 @@
         @if (session('status'))
             <div class="alert alert-success">{{ session('status') }}</div>
         @endif
-        {{-- Breadcrumb --}}
+
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
@@ -28,7 +28,6 @@
         @endif
 
         <div class="row">
-            {{-- Left: images and description --}}
             <div class="col-lg-8 mb-4">
                 @if ($ad->images->isNotEmpty())
                     <div id="adCarousel" class="carousel slide mb-3">
@@ -61,7 +60,6 @@
                 <p style="white-space: pre-line;">{{ $ad->description }}</p>
             </div>
 
-            {{-- Right: price and seller --}}
             <div class="col-lg-4 mb-4">
                 <div class="card mb-3">
                     <div class="card-body">
@@ -137,7 +135,6 @@
             </div>
         </div>
 
-        {{-- Related ads --}}
         @if ($related->isNotEmpty())
             <h5 class="mb-3">Similar ads</h5>
             <div class="row">
@@ -147,11 +144,13 @@
                             <div class="card h-100">
                                 @if ($item->images->isNotEmpty())
                                     <img src="{{ asset('storage/' . $item->images->first()->path) }}"
-                                         class="card-img-top" style="height: 140px; object-fit: cover;" alt="">
+                                         class="card-img-top p-2" style="height: 140px; object-fit: cover;" alt="">
                                 @endif
                                 <div class="card-body">
                                     <h6 class="card-title">{{ $item->title }}</h6>
                                     <small class="text-muted">{{ $item->city->name }}</small>
+                                    <small class="ms-2">{{$ad->publishSince()}}</small>
+
                                 </div>
                             </div>
                         </a>

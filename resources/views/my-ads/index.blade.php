@@ -4,7 +4,6 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="mb-0">My ads</h2>
-            <a href="{{ route('ads.create') }}" class="btn btn-warning">Post an ad</a>
         </div>
 
         @if (session('status'))

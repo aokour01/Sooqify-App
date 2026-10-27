@@ -14,9 +14,10 @@
             ];
         @endphp
 
-        {{-- Number cards --}}
+
+
         <div class="row g-3 mb-4">
-            <div class="col-6 col-lg-3">
+            <div class="col-lg-4">
                 <a href="{{ route('admin.ads.index') }}" class="text-decoration-none text-reset">
                     <div class="card shadow-sm h-100 {{ $stats['pending'] > 0 ? 'border-warning' : '' }}">
                         <div class="card-body">
@@ -28,7 +29,7 @@
             </div>
 
             @can('reports.view')
-                <div class="col-6 col-lg-3">
+                <div class="col-lg-4">
                     <a href="{{ route('admin.reports.index') }}" class="text-decoration-none text-reset">
                         <div class="card shadow-sm h-100 {{ $stats['open_reports'] > 0 ? 'border-danger' : '' }}">
                             <div class="card-body">
@@ -40,7 +41,7 @@
                 </div>
             @endcan
 
-            <div class="col-6 col-lg-3">
+            <div class="col-lg-4">
                 <div class="card shadow-sm h-100">
                     <div class="card-body">
                         <div class="text-muted small">Active ads</div>
@@ -64,7 +65,7 @@
         </div>
 
         <div class="row g-4 mb-4">
-            {{-- Ads by status --}}
+
             <div class="col-lg-6">
                 <div class="card shadow-sm h-100">
                     <div class="card-header bg-white fw-bold">Ads by status</div>
@@ -86,7 +87,6 @@
                 </div>
             </div>
 
-            {{-- Top categories --}}
             <div class="col-lg-6">
                 <div class="card shadow-sm h-100">
                     <div class="card-header bg-white fw-bold">Top categories (active ads)</div>
@@ -105,7 +105,6 @@
         </div>
 
         <div class="row g-4">
-            {{-- Oldest pending ads --}}
             <div class="col-lg-7">
                 <div class="card shadow-sm">
                     <div class="card-header bg-white d-flex justify-content-between">
@@ -127,7 +126,6 @@
                 </div>
             </div>
 
-            {{-- Newest users --}}
             @can('users.manage')
                 <div class="col-lg-5">
                     <div class="card shadow-sm">

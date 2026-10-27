@@ -7,7 +7,7 @@
             <div class="alert alert-success">{{ session('status') }}</div>
         @endif
 
-        {{-- Search --}}
+
         <div class="bg-white rounded shadow-sm p-4 mb-5">
             <h2 class="mb-3">Find what you need</h2>
             <form method="GET" action="{{ route('ads.index') }}" class="row g-2">
@@ -28,7 +28,7 @@
             </form>
         </div>
 
-        {{-- Categories --}}
+
         <h4 class="mb-3">Browse by category</h4>
         <div class="row row-cols-lg-6 g-3 mb-5">
             @foreach ($categories as $category)
@@ -49,9 +49,9 @@
         </div>
 
 
-        {{-- Latest ads --}}
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4 class="mb-0">Latest ads</h4>
+
+        <div class="d-flex justify-content-between align-items-center border-top mb-3">
+            <h4 class="mb-0 mt-3">Latest ads</h4>
             <a href="{{ route('ads.index') }}">See all</a>
         </div>
 
@@ -82,5 +82,8 @@
                 <p class="text-muted">No ads yet. Be the first to post one!</p>
             @endforelse
         </div>
+
+
+
     </div>
 @endsection

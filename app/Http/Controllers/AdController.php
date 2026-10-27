@@ -28,7 +28,6 @@ class AdController extends Controller
 
             $subcategories = $category->children()->where('is_active', true)->get();
 
-            // A leaf category has no children, so show its siblings with the current one highlighted
             if ($subcategories->isEmpty() && $category->parent) {
                 $subcategories = $category->parent->children()->where('is_active', true)->get();
             }
@@ -100,11 +99,13 @@ class AdController extends Controller
 
         return redirect()->route('home')
             ->with('status', 'Your ad was submitted and is waiting for approval.');
-    }    public function show(Request $request, Ad $ad)
+    }
+
+    public function show(Request $request, Ad $ad)
     {
         $user = $request->user();
 
-        // Only approved ads are public. The owner and moderators can preview others.
+
         $canPreview = $user && ($user->id === $ad->user_id || $user->can('ads.approve'));
         abort_unless($ad->isLive() || $canPreview, 404);
 
@@ -151,7 +152,7 @@ class AdController extends Controller
      */
     private function categorySidebar(?Category $category): array
     {
-        // Two queries in total, however deep the tree is
+
         $all      = Category::where('is_active', true)->orderBy('sort_order')->get();
         $byParent = $all->groupBy(fn ($c) => $c->parent_id ?? 0);
         $byId     = $all->keyBy('id');
@@ -177,8 +178,7 @@ class AdController extends Controller
             $total($root->id);
         }
 
-        // List the children of the current category. A category with no children
-        // lists its siblings instead, with itself highlighted.
+
         $listParent = null;
         if ($category) {
             $listParentId = isset($byParent[$category->id]) ? $category->id : $category->parent_id;

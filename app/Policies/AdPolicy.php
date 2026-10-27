@@ -37,7 +37,7 @@ class AdPolicy
      */
     public function update(User $user, Ad $ad): bool
     {
-        return (int) $user->id === (int) $ad->user_id;
+        return $user->is($ad->user);
     }
 
     /**
@@ -45,8 +45,7 @@ class AdPolicy
      */
     public function delete(User $user, Ad $ad): bool
     {
-        return (int) $user->id === (int) $ad->user_id
-            || $user->can('ads.delete-any');
+        return $user->is($ad->user) || $user->can('ads.delete-any ');
     }
 
     /**

@@ -57,7 +57,6 @@
 
             <div class="col-lg-4">
 
-                {{-- LEFT: the category tree --}}
                 <aside class="mb-4">
                     @php $keep = request()->except(['category', 'page']); @endphp
 
@@ -76,7 +75,6 @@
                                     All categories
                                 </a>
 
-                                {{-- The path to the current level --}}
                                 @foreach ($sidebar['chain'] as $node)
                                     <a href="{{ route('ads.index', array_merge($keep, ['category' => $node->slug])) }}"
                                        class="d-block py-1 text-decoration-none {{ $category && $node->id === $category->id ? 'fw-bold text-dark' : 'text-muted' }}"
@@ -85,7 +83,6 @@
                                     </a>
                                 @endforeach
 
-                                {{-- The categories at this level, with counts --}}
                                 @php $depth = count($sidebar['chain']) + 1; @endphp
 
                                 @foreach ($sidebar['items'] as $item)

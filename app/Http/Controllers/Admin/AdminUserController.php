@@ -30,7 +30,6 @@ class AdminUserController extends Controller
 
     public function updateRole(Request $request, User $user)
     {
-        // Admin accounts cannot be changed from the screen, so nobody can lock themselves out
         abort_if($user->hasRole('admin'), 403, 'Admin roles cannot be changed here.');
 
         $data = $request->validate([

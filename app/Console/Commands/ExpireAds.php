@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Ad;
 use Illuminate\Console\Command;
+use App\Notifications\AdEvent;
 
 class ExpireAds extends Command
 {

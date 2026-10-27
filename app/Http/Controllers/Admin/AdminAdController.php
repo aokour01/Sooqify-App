@@ -80,14 +80,13 @@ class AdminAdController extends Controller
 
     public function destroy(Ad $ad)
     {
-        $ad->delete();   // soft delete: the row stays and can be restored
+        $ad->delete();
 
         return back()->with('status', "Ad \"{$ad->title}\" removed.");
     }
 
     public function restore(int $adId)
     {
-        // {ad} binding skips deleted rows, so the id is looked up by hand
         $ad = Ad::onlyTrashed()->findOrFail($adId);
         $ad->restore();
 

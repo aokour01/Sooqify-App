@@ -1,20 +1,13 @@
 <!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{{ config('app.name') }}</title>
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
-
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-
-    <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+
 </head>
 <body>
     <div id="app">
@@ -28,14 +21,16 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto"></ul>
 
-                    <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto align-items-md-center">
                         <li class="nav-item me-lg-2 my-1">
                             <a href="{{ route('ads.create') }}" class="btn btn-warning">Post an ad</a>
                         </li>
+                    </ul>
+
+
+                    <ul class="navbar-nav ms-auto align-items-md-center">
+
 
                         @canany(['ads.approve', 'ads.reject'])
                             <li class="nav-item me-lg-2 my-1">
@@ -63,7 +58,7 @@
 
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('my-ads.index') }}">
-                                    <i class="bi bi-badge-ad"></i>
+                                    My ads
                                 </a>
                             </li>
 
@@ -110,5 +105,65 @@
             @yield('content')
         </main>
     </div>
+    <footer>
+        <div class="container border-top">
+            <div class="row">
+                <div class="col">
+                    <h4 class="ms-2 mt-2 fw-bold ">Sooqify <small>Ltd &copy; </small></h4>
+                    <h6 class=" d-inline ms-2">version 1.0.0</h6>
+                </div>
+                <div class="col">
+                    <h4 class="ms-2 mt-2 fw-bold">About OpenSooq</h4>
+                    <div class="row">
+                        <div class="col-12">
+                            <a href="" class="text-decoration-none"><p class="text-dark ms-2"> About us</p></a>
+                        </div>
+                        <div class="col-12">
+                            <a href="" class="text-decoration-none"><p class="text-dark ms-2">Our Products</p></a>
+                        </div>
+                        <div class="col-12">
+                            <a href="" class="text-decoration-none"><p class="text-dark ms-2">Sitemap</p></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <h4 class="ms-2 mt-2 fw-bold">Support</h4>
+                    <div class="row">
+                        <div class="col-12">
+                            <a href="" class="text-decoration-none"><p class="text-dark ms-2">Help</p></a>
+                        </div>
+                        <div class="col-12">
+                            <a href="" class="text-decoration-none"><p class="text-dark ms-2">Sales Team</p></a>
+                        </div>
+                        <div class="col-12">
+                            <a href="" class="text-decoration-none"><p class="text-dark ms-2">Terms Of Use</p></a>
+                        </div>
+                        <div class="col-12">
+                            <a href="" class="text-decoration-none"><p class="text-dark ms-2">Privacy Policy</p></a>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col">
+                    <h4 class="ms-2 mt-2 fw-bold">Others</h4>
+                    <div class="row">
+                        <div class="col-12">
+                            <a href="" class="text-decoration-none"><p class="text-dark ms-2">Sell Anything</p></a>
+                        </div>
+                        <div class="col-12">
+                            <a href="" class="text-decoration-none"><p class="text-dark ms-2">Top Sold Cars On Site</p></a>
+                        </div>
+                        <div class="col-12">
+                            <a href="" class="text-decoration-none"><p class="text-dark ms-2">Tags</p></a>
+                        </div>
+                        <div class="col-12">
+                            <a href="" class="text-decoration-none"><p class="text-dark ms-2">Area Guide</p></a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>

@@ -53,7 +53,6 @@ class AdminReportController extends Controller
                 ));
             }
 
-            // Close every open report on this ad, not just this one
             Report::where('ad_id', $report->ad_id)
                 ->where('status', Report::STATUS_OPEN)
                 ->update([

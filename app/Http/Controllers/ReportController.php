@@ -27,7 +27,6 @@ class ReportController extends Controller
             $data
         ));
 
-        // Tell the staff only about a genuinely new report
         if ($report->wasRecentlyCreated) {
             Notification::send(
                 User::permission('reports.view')->get(),

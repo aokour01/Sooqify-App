@@ -10,7 +10,6 @@ class DashboardController extends Controller
     {
         $user = $request->user();
 
-        // One query that counts my ads per status
         $counts = $user->ads()
             ->selectRaw('status, count(*) as total')
             ->groupBy('status')
@@ -29,7 +28,7 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
-        // Expired ads, plus active ads that end within 7 days
+
         $needsRenewal = $user->ads()
             ->where(fn ($q) => $q->where('status', 'expired')
                 ->orWhere(fn ($q2) => $q2->where('status', 'active')
