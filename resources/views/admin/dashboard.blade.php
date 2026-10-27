@@ -17,7 +17,7 @@
 
 
         <div class="row g-3 mb-4">
-            <div class="col-lg-4">
+            <div class="col-lg-3 flex-fill">
                 <a href="{{ route('admin.ads.index') }}" class="text-decoration-none text-reset">
                     <div class="card shadow-sm h-100 {{ $stats['pending'] > 0 ? 'border-warning' : '' }}">
                         <div class="card-body">
@@ -29,7 +29,7 @@
             </div>
 
             @can('reports.view')
-                <div class="col-lg-4">
+                <div class="col-lg-3 flex-fill">
                     <a href="{{ route('admin.reports.index') }}" class="text-decoration-none text-reset">
                         <div class="card shadow-sm h-100 {{ $stats['open_reports'] > 0 ? 'border-danger' : '' }}">
                             <div class="card-body">
@@ -41,7 +41,7 @@
                 </div>
             @endcan
 
-            <div class="col-lg-4">
+            <div class="col-lg-3 flex-fill">
                 <div class="card shadow-sm h-100">
                     <div class="card-body">
                         <div class="text-muted small">Active ads</div>
@@ -52,7 +52,7 @@
             </div>
 
             @can('users.manage')
-                <div class="col-6 col-lg-3">
+                <div class="col-lg-3">
                     <div class="card shadow-sm h-100">
                         <div class="card-body">
                             <div class="text-muted small">Users</div>

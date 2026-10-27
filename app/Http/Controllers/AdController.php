@@ -107,9 +107,10 @@ class AdController extends Controller
 
 
         $canPreview = $user && ($user->id === $ad->user_id || $user->can('ads.approve'));
+
         abort_unless($ad->isLive() || $canPreview, 404);
 
-        // Count a view once per session, and never the owner's own views
+
         $key = "viewed_ad_{$ad->id}";
         if ($ad->status === Ad::STATUS_ACTIVE
             && ! $request->session()->has($key)
@@ -145,11 +146,8 @@ class AdController extends Controller
 
         return response()->json(['phone' => $ad->contact_phone]);
     }
-    /**
-     * Data for the left-hand category tree: the chain of parents to show,
-     * the categories to list under it, and the number of active ads
-     * for every category (including its subcategories).
-     */
+
+
     private function categorySidebar(?Category $category): array
     {
 
@@ -162,7 +160,7 @@ class AdController extends Controller
             ->groupBy('category_id')
             ->pluck('total', 'category_id');
 
-        // Count of a category = its own ads + the counts of all its children
+
         $counts = [];
         $total = function (int $id) use (&$total, &$counts, $byParent, $direct) {
             $sum = (int) ($direct[$id] ?? 0);
@@ -185,7 +183,7 @@ class AdController extends Controller
             $listParent   = $listParentId ? ($byId[$listParentId] ?? null) : null;
         }
 
-        // The chain of parents shown above the list, root first
+
         $chain = [];
         for ($node = $listParent; $node; $node = $node->parent_id ? ($byId[$node->parent_id] ?? null) : null) {
             array_unshift($chain, $node);
