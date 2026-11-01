@@ -92,6 +92,7 @@ class AdController extends Controller
             return $ad;
         });
 
+
         Notification::send(
             User::permission('ads.approve')->where('id', '!=', $request->user()->id)->get(),
             new AdEvent($ad, 'pending', "New ad waiting for approval: \"{$ad->title}\" by {$request->user()->name}.")

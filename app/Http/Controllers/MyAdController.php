@@ -131,4 +131,23 @@ class MyAdController extends Controller
 
         return back()->with('status', 'Ad renewed for 30 days.');
     }
+
+    public function repost(Ad $ad ,Request $request)
+    {
+        $this->authorize('update', $ad);
+        abort_unless($ad->canBeRestored(), 422);
+
+        $ad->forceFill([
+            'status'      => Ad::STATUS_PENDING,
+            'created_at'  => now(),
+            'updated_at'  => now(),
+        ])->save();
+
+        Notification::send(
+            User::permission('ads.approve')->where('id', '!=', $request->user()->id)->get(),
+            new AdEvent($ad, 'pending', "New ad waiting for approval: \"{$ad->title}\" by {$request->user()->name}.")
+        );
+
+        return back()->with('status', 'Ad is waiting approval for two days.');
+    }
 }

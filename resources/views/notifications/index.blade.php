@@ -10,6 +10,7 @@
                 'expired'  => 'bi-clock-history text-secondary',
                 'report'   => 'bi-flag text-warning',
                 'pending'  => 'bi-hourglass-split text-warning',
+                'deleted' => 'bi-trash text-secondary',
             ];
         @endphp
 

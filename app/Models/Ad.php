@@ -16,6 +16,8 @@ class Ad extends Model
     public const STATUS_REJECTED = 'rejected';
     public const STATUS_EXPIRED  = 'expired';
 
+    public const STATUS_DELETED  = 'deleted';
+
     protected $fillable = [
         'category_id', 'city_id', 'title', 'slug', 'description',
         'price', 'is_negotiable', 'condition', 'contact_phone',
@@ -26,6 +28,7 @@ class Ad extends Model
         'price' => 'integer',
         'published_at'  => 'datetime',
         'expires_at'    => 'datetime',
+        'updated_at'  => 'datetime',
     ];
 
     public function user()
@@ -75,6 +78,16 @@ class Ad extends Model
         return $this->status === self::STATUS_ACTIVE
             && $this->expires_at
             && $this->expires_at->lte(now()->addDays(7));
+    }
+
+    public function canBeRestored(): bool
+    {
+        if ($this->status === self::STATUS_DELETED) {
+            return true;
+        }
+
+        return $this->status === self::STATUS_PENDING
+            && $this->updated_at->lte(now()->subDays(2));
     }
 
     public function getRouteKeyName(): string

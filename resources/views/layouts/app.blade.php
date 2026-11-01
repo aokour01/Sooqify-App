@@ -69,13 +69,14 @@
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('notifications.index') }}" title="Notifications">
+                                <a id="notification-bell" class="nav-link" href="{{ route('notifications.index') }}" title="Notifications"
+                                   data-user-id="{{ auth()->id() }}" data-base-url="{{ url('/notifications') }}">
                                     <i class="bi bi-bell"></i>
-                                    @if ($unreadNotifications > 0)
-                                        <span class="badge rounded-pill bg-danger">{{ $unreadNotifications }}</span>
-                                    @endif
+                                    <span id="notification-count" data-count="{{ $unreadNotifications }}"
+                                          class="badge rounded-pill bg-danger {{ $unreadNotifications > 0 ? '' : 'd-none' }}">{{ $unreadNotifications }}</span>
                                 </a>
                             </li>
+
 
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"

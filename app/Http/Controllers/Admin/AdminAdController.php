@@ -13,7 +13,7 @@ class AdminAdController extends Controller
     {
         $ads = Ad::where('status', Ad::STATUS_PENDING)
             ->with(['user', 'category.parent.parent', 'city', 'images'])
-            ->oldest()
+            ->latest('created_at')
             ->paginate(15);
 
         return view('admin.ads.index', compact('ads'));
@@ -58,7 +58,7 @@ class AdminAdController extends Controller
     }
     public function all(Request $request)
     {
-        $statuses = ['pending', 'active', 'sold', 'rejected', 'expired'];
+        $statuses = ['pending', 'active', 'sold', 'rejected', 'expired',];
 
         $ads = Ad::query()
             ->when($request->status === 'deleted', fn ($q) => $q->onlyTrashed())

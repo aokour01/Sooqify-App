@@ -13,7 +13,7 @@
         @php
             $badges = [
                 'pending' => 'warning', 'active' => 'success', 'sold' => 'secondary',
-                'rejected' => 'danger', 'expired' => 'dark',
+                'rejected' => 'danger', 'expired' => 'dark', 'deleted' => 'primary'
             ];
         @endphp
 
@@ -25,7 +25,7 @@
             <div class="col-md-3">
                 <select name="status" class="form-select">
                     <option value="">All statuses</option>
-                    @foreach (['pending', 'active', 'sold', 'rejected', 'expired', 'deleted'] as $status)
+                    @foreach (['pending', 'active', 'sold', 'rejected', 'expired', 'deleted', ] as $status)
                         <option value="{{ $status }}" @selected(request('status') === $status)>{{ ucfirst($status) }}</option>
                     @endforeach
                 </select>

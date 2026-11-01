@@ -36,9 +36,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/ads/{ad:slug}/favorite', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
 
     Route::post('/ads/{ad:slug}/report', [ReportController::class, 'store'])
-        ->middleware('throttle:5,1')->name('reports.store');
+        ->middleware('throttle:10,1')->name('reports.store');
 
     Route::patch('/my-ads/{ad}/renew', [MyAdController::class, 'renew'])->name('my-ads.renew');
+    Route::patch('/my-ads/{ad}/repost', [MyAdController::class, 'repost'])->name('my-ads.repost');
+
 
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
     Route::get('/notifications/{id}', [NotificationController::class, 'open'])->name('notifications.open');

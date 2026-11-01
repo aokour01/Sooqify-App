@@ -25,6 +25,7 @@ class NotificationController extends Controller
             'rejected' => route('my-ads.edit', $data['ad_slug']),
             'report'   => route('admin.reports.index'),
             'pending'  => route('admin.ads.index'),
+            'deleted' => route('my-ads.index'),
             default    => route('ads.show', $data['ad_slug']),
         };
 

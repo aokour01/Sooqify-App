@@ -17,6 +17,7 @@
                 'sold'     => 'secondary',
                 'rejected' => 'danger',
                 'expired'  => 'dark',
+                'deleted'  =>'primary',
             ];
         @endphp
 
@@ -61,6 +62,13 @@
                                 <form method="POST" action="{{ route('my-ads.renew', $ad) }}" class="d-inline">
                                     @csrf @method('PATCH')
                                     <button class="btn btn-sm btn-outline-primary">Renew</button>
+                                </form>
+                            @endif
+
+                            @if ($ad->canBeRestored())
+                                <form method="POST" action="{{ route('my-ads.repost', $ad) }}" class="d-inline">
+                                    @csrf @method('PATCH')
+                                    <button class="btn btn-sm btn-outline-primary">Repost</button>
                                 </form>
                             @endif
 
