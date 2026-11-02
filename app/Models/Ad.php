@@ -106,4 +106,9 @@ class Ad extends Model
     {
         return ($this->published_at ?? $this->created_at)->diffForHumans();
     }
+
+    public function favoritedBy()
+    {
+        return $this->belongsToMany(User::class, 'favorites')->withTimestamps();
+    }
 }

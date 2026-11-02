@@ -80,11 +80,13 @@ class AdminAdController extends Controller
 
     public function destroy(Ad $ad)
     {
+//        soft delete
         $ad->delete();
 
         return back()->with('status', "Ad \"{$ad->title}\" removed.");
     }
 
+// for deleted ads by admin
     public function restore(int $adId)
     {
         $ad = Ad::onlyTrashed()->findOrFail($adId);

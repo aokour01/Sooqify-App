@@ -49,7 +49,7 @@ class AdEvent extends Notification
             ->action($isReport ? 'View reports' : 'View waiting ads', route($isReport ? 'admin.reports.index' : 'admin.ads.index'))
             ->line('Thank you for supervising us!');
     }
-
+//what is sent to pusher ,and saved to the Database (for the bell icon).down
     public function toArray(object $notifiable): array
     {
         return [

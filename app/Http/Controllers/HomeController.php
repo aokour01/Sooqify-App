@@ -22,9 +22,18 @@ class HomeController extends Controller
             ->latest('published_at')
             ->take(8)
             ->get();
+        $mostViewedAds = Ad::active()
+            ->with(['images', 'city'])
+            ->withCount('favoritedBy')
+            ->orderByDesc('views')
+            ->orderByDesc('favorited_by_count')
+            ->orderByDesc('published_at')
+            ->take(8)
+            ->get();
+
 
         $cities = City::orderBy('name')->get();
 
-        return view('home', compact('categories', 'latestAds', 'cities'));
+        return view('home', compact('categories', 'latestAds', 'cities', 'mostViewedAds'));
     }
 }
