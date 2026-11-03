@@ -81,4 +81,3 @@ Route::middleware(['auth', 'verified', 'role:admin|moderator'])
         });
  });
 
-

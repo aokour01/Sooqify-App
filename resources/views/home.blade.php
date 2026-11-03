@@ -50,48 +50,13 @@
 
 
 
+
         <div class="d-flex justify-content-between align-items-center border-top mb-3">
-            <h4 class="mb-0 mt-3">Latest ads</h4>
+            <h4 class="mb-0 mt-3">Top Products</h4>
             <a href="{{ route('ads.index') }}">See all</a>
         </div>
 
-
-
         <div class="row">
-            @forelse ($latestAds as $ad)
-                <div class="col-lg-3 mb-4">
-                    <a href="{{ route('ads.show', $ad) }}" class="text-decoration-none text-reset">
-                        <div class="card h-100 shadow-sm">
-                            @if ($ad->images->isNotEmpty())
-                                <img src="{{ asset('storage/' . $ad->images->first()->path) }}"
-                                     class="card-img-top p-2" style="height: 160px; object-fit: cover;"
-                                     loading="lazy" alt="{{ $ad->title }}">
-                            @else
-                                <div class="bg-light d-flex align-items-center justify-content-center text-muted"
-                                     style="height: 160px;">No image</div>
-                            @endif
-                            <div class="card-body">
-                                <h4 class="mb-2 fw-bold text-danger">{{ $ad->price ? number_format($ad->price) . ' JOD' : 'Contact for price' }}</h4>
-                                <h5 class="card-title">{{ $ad->title }}</h5>
-                                <small class="text-muted">{{ $ad->city->name }}</small>
-                                <small class="ms-2">{{$ad->publishSince()}}</small>
-
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            @empty
-                <p class="text-muted">No ads yet. Be the first to post one!</p>
-            @endforelse
-        </div>
-
-
-            <div class="d-flex justify-content-between align-items-center border-top mb-3">
-                <h4 class="mb-0 mt-3">Top Products</h4>
-                <a href="{{ route('ads.index') }}">See all</a>
-            </div>
-
-            <div class="row">
                 @forelse ($mostViewedAds as $mvad)
                     <div class="col-lg-3 mb-4">
                         <a href="{{ route('ads.show', $mvad) }}" class="text-decoration-none text-reset">
@@ -122,6 +87,47 @@
                     <p class="text-muted">No ads yet. Be the first to post one!</p>
                 @endforelse
             </div>
+
+
+
+
+        <div class="d-flex justify-content-between align-items-center border-top mb-3">
+            <h4 class="mb-0 mt-3">Latest ads</h4>
+            <a href="{{ route('ads.index') }}">See all</a>
+        </div>
+            
+        <div class="row">
+            @forelse ($latestAds as $ad)
+                <div class="col-lg-3 mb-4">
+                    <a href="{{ route('ads.show', $ad) }}" class="text-decoration-none text-reset">
+                        <div class="card h-100 shadow-sm">
+                            @if ($ad->images->isNotEmpty())
+                                <img src="{{ asset('storage/' . $ad->images->first()->path) }}"
+                                     class="card-img-top p-2" style="height: 160px; object-fit: cover;"
+                                     loading="lazy" alt="{{ $ad->title }}">
+                            @else
+                                <div class="bg-light d-flex align-items-center justify-content-center text-muted"
+                                     style="height: 160px;">No image</div>
+                            @endif
+                            <div class="card-body">
+                                <h4 class="mb-2 fw-bold text-danger">{{ $ad->price ? number_format($ad->price) . ' JOD' : 'Contact for price' }}</h4>
+                                <h5 class="card-title">{{ $ad->title }}</h5>
+                                <small class="text-muted">{{ $ad->city->name }}</small>
+                                <small class="d-block text-muted mt-1">
+                                    <i class="bi bi-eye"></i> {{ $ad->views }}
+                                    <i class="bi bi-heart ms-2"></i> {{ $ad->favorited_by_count }}
+                                </small>
+                                <small class="ms-2">{{$ad->publishSince()}}</small>
+
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            @empty
+                <p class="text-muted">No ads yet. Be the first to post one!</p>
+            @endforelse
+        </div>
+
 
 
 

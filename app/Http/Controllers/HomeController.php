@@ -22,6 +22,7 @@ class HomeController extends Controller
             ->latest('published_at')
             ->take(8)
             ->get();
+
         $mostViewedAds = Ad::active()
             ->with(['images', 'city'])
             ->withCount('favoritedBy')

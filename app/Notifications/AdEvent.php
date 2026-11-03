@@ -42,14 +42,15 @@ class AdEvent extends Notification
 
         return (new MailMessage)
             ->subject($isReport ? 'New report on an ad' : 'New ad waiting for approval')
-            ->greeting("Hello {$notifiable->name}")
-            ->line($this->message)
-            ->line('Ad Title : ' . $this->ad->title)
-            ->line('Ad Slug : ' . $this->ad->slug)
-            ->action($isReport ? 'View reports' : 'View waiting ads', route($isReport ? 'admin.reports.index' : 'admin.ads.index'))
-            ->line('Thank you for supervising us!');
-    }
-//what is sent to pusher ,and saved to the Database (for the bell icon).down
+            ->markdown('mail.ad-event', [
+                'ad'         => $this->ad->loadMissing(['city', 'category', 'user']),
+                'name'       => $notifiable->name,
+                'heading'    => $isReport ? 'An ad was reported' : 'An ad needs your review',
+                'summary'    => $this->message,
+                'url'        => route($isReport ? 'admin.reports.index' : 'admin.ads.index'),
+                'buttonText' => $isReport ? 'Review reports' : 'Review pending ads',
+            ]);
+    }//what is sent to pusher ,and saved to the Database (for the bell icon).down
     public function toArray(object $notifiable): array
     {
         return [
