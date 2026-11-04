@@ -61,19 +61,14 @@ Users must verify their email before posting. For local work, set `MAIL_MAILER=l
 
 ## Ad expiry
 
-Ads expire automatically through the Laravel scheduler. During development run `php artisan schedule:work`. On a server, add this cron entry:
+Ads expire automatically through the Laravel scheduler. During development run `php artisan schedule:work`. On a server.
 
-```
-* * * * * cd /path/to/sooqify && php artisan schedule:run >> /dev/null 2>&1
-```
 
 ## Demo data (optional)
 
 ```bash
 php artisan db:seed --class=DemoAdSeeder
 ```
-
-It creates sample ads in every category, owned by demo accounts `demo1@sooqify.test` to `demo5@sooqify.test` (password `password`). Put some `.jpg` or `.png` files in `storage/app/demo-images/` first if you want real pictures. It refuses to run in production.
 
 ## More details
 
